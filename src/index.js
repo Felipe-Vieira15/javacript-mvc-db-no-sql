@@ -1,6 +1,5 @@
 const express = require('express');
 const userApi = require('./api/user');
-const loggerApi = require('./api/logger');
 const database = require('./config/database');
 
 /**
@@ -31,9 +30,8 @@ app.use(userApi.validarToken);
 app.get('/users', userApi.listarUsuario);
 app.put('/users/:id', userApi.alterarUsuario);
 app.delete('/users/:id', userApi.deletarUsuario);
-app.get('/logs', loggerApi.listLog);
 
-database.db.sync({ force: true })
+database.db.sync({ force: false })
     .then(() => {
         app.listen(3000, () => {
             console.log('Server is running on port 3000')
