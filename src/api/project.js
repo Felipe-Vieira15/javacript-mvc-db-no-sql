@@ -1,4 +1,4 @@
-const controller = require('../controllers/project');
+const controller = require('../controller/projectController');
 
 class ProjectApi {
     async criarProjeto(req, res) {
