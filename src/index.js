@@ -1,5 +1,7 @@
 const express = require('express');
 const userApi = require('./api/user');
+const projectApi = require('./api/project');
+const taskApi = require('./api/task');
 const database = require('./config/database');
 
 /**
@@ -24,12 +26,22 @@ app.get('/', (req, res) => {
 })
 app.post('/login', userApi.login);
 app.post('/users', userApi.criarUsuario);
+app.post('/projects', projectApi.criarProjeto);
+app.post('/tasks', taskApi.criarTarefa);
+
 
 // Aplica a validação do token para as rotas abaixo
 app.use(userApi.validarToken);
 app.get('/users', userApi.listarUsuario);
 app.put('/users/:id', userApi.alterarUsuario);
 app.delete('/users/:id', userApi.deletarUsuario);
+app.get('/projects', projectApi.listarProjeto);
+app.put('/projects/:id', projectApi.alterarProjeto);
+app.delete('/projects/:id', projectApi.deletarProjeto);
+app.get('/tasks', taskApi.listarTarefa);
+app.put('/tasks/:id', taskApi.alterarTarefa);
+app.delete('/tasks/:id', taskApi.deletarTarefa);
+
 
 database.db.sync({ force: false })
     .then(() => {
