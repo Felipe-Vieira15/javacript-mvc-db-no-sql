@@ -19,8 +19,7 @@ class UserController {
         const senhaCriptografada = await bcrypt.hash(senha, saltRounds);
 
         // INSERT INTO users (nome, email, senha) VALUES (nome, email, senha);
-        const user = await User
-            .create({ nome, email, senha: senhaCriptografada });
+        const user = await User.create({ nome, email, senha: senhaCriptografada });
 
         return user;
     }
@@ -102,15 +101,17 @@ class UserController {
         return { token: jwtToken }
     }
 
-    async validarToken(token) {
-        try {
-            // Verifica se o token é válido e retorna o payload
-            const payload = jwt.verify(token, JWT_SECRET_KEY);
-            return payload;
-        } catch (error) {
-            throw new Error('Token inválido');
-        }
-    }
+    // async validarToken(req, res, next) {
+    //     try {
+    //         const token = req.headers['authorization'].split(' ')[1];
+    //         // Verifica se o token é válido e retorna o payload
+    //         const payload = jwt.verify(token, JWT_SECRET_KEY);
+    //         req.userId = payload.id;
+    //         next();
+    //     } catch (error) {
+    //         throw new Error('Token inválido');
+    //     }
+    // }
 }
 
 module.exports = new UserController();

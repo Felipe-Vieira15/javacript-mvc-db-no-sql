@@ -60,13 +60,14 @@ class UserApi {
 
     // Método para validar o token
     async validarToken(req, res, next) {
-        const token = req.headers.authorization;
-
         try {
-            await controller.validarToken(token);
+            const token = req.headers['authorization'].split(' ')[1];
+            // Verifica se o token é válido e retorna o payload
+            const payload = jwt.verify(token, JWT_SECRET_KEY);
+            req.userId = payload.id;
             next();
         } catch (error) {
-            return res.status(400).send({ error: error.message })
+            throw new Error('Token inválido');
         }
     }
 }
