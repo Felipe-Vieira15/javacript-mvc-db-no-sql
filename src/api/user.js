@@ -48,6 +48,30 @@ class UserApi {
             return res.status(400).send({ error: error.message })
         }
     }
+
+    // Método para login
+    async login(req, res) {
+        try {
+            const { email, senha } = req.body;
+            const token = await controller.login(email, senha);
+            return res.status(200).send(token);
+        } catch (error) {
+            return res.status(400).send({ error: error.message })
+        }
+    }
+
+    // Método para validar o token
+    async validarToken(req, res, next) {
+        try {
+            const token = req.headers['authorization'].split(' ')[1];
+            // Verifica se o token é válido e retorna o payload
+            const payload = jwt.verify(token, JWT_SECRET_KEY);
+            req.userId = payload.id;
+            next();
+        } catch (error) {
+            throw new Error('Token inválido');
+        }
+    }
 }
 
 module.exports = new UserApi();
