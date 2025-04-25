@@ -2,7 +2,7 @@ const controller = require('../controller/projectController');
 
 class ProjectApi {
     async criarProjeto(req, res) {
-        const nome = req.body;
+        const nome = req.body.nome;
         const descricao = req.body.descricao;
 
         try {
@@ -26,14 +26,16 @@ class ProjectApi {
     }
 
     async deletarProjeto(req, res) {
-        const { id } = req.params;
+        const { id } = req.params; 
 
         try {
             await controller.deletarProjeto(Number(id));
-            return res.status(204).send();
+
+            return res.status(200).json({ message: 'Projeto deletado com sucesso' });
         } catch (error) {
-            return res.status(400).send({ error: error.message });
+            return res.status(400).json({ error: error.message });
         }
+
     }
 
     async listarProjeto(req, res) {

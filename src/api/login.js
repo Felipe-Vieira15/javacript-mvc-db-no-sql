@@ -1,6 +1,9 @@
 const controller = require('../controller/userController');
+const jwt = require('jsonwebtoken');
 
-class Login {
+const JWT_SECRET_KEY = 'lipeee';
+
+class LoginApi {
     // Login do usuário
     async login(req, res) {
         try {
@@ -12,17 +15,17 @@ class Login {
         }
     }
 
-    // Middleware para validar token
+    // Método para validar o token
     async validarToken(req, res, next) {
         const token = req.headers.authorization;
 
         try {
             await controller.validarToken(token);
-            next(); // Continua para o próximo middleware ou rota
+            next();
         } catch (error) {
-            return res.status(401).send({ error: 'Token inválido ou expirado' });
+            return res.status(400).send({ error: error.message })
         }
     }
 }
 
-module.exports = new Login();
+module.exports = new LoginApi();

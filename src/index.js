@@ -2,6 +2,7 @@ const express = require('express');
 const userApi = require('./api/user');
 const projectApi = require('./api/project');
 const taskApi = require('./api/task');
+const loginApi = require('./api/login');
 const database = require('./config/database');
 
 /**
@@ -24,14 +25,14 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.send({ response: 'Hello World!' });
 })
-app.post('/login', userApi.login);
+app.post('/login', loginApi.login);
 app.post('/users', userApi.criarUsuario);
 app.post('/projects', projectApi.criarProjeto);
 app.post('/tasks', taskApi.criarTarefa);
 
 
 // Aplica a validação do token para as rotas abaixo
-app.use(userApi.validarToken);
+app.use(loginApi.validarToken);
 app.get('/users', userApi.listarUsuario);
 app.put('/users/:id', userApi.alterarUsuario);
 app.delete('/users/:id', userApi.deletarUsuario);

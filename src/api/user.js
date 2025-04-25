@@ -27,14 +27,16 @@ class UserApi {
     }
 
     async deletarUsuario(req, res) {
-        const { id } = req.params;
+        const { id } = req.params; 
 
         try {
             await controller.deletarUsuario(Number(id));
-            return res.status(204).send();
+
+            return res.status(200).json({ message: 'Usuário deletado com sucesso' });
         } catch (error) {
-            return res.status(400).send({ error: error.message })
+            return res.status(400).json({ error: error.message });
         }
+
     }
 
     async listarUsuario(req, res) {
@@ -42,29 +44,6 @@ class UserApi {
         try {
             const users = await controller.listarUsuarios();
             return res.status(200).send(users);
-        } catch (error) {
-            return res.status(400).send({ error: error.message })
-        }
-    }
-
-    // Método para login
-    async login(req, res) {
-        try {
-            const { email, senha } = req.body;
-            const token = await controller.login(email, senha);
-            return res.status(200).send(token);
-        } catch (error) {
-            return res.status(400).send({ error: error.message })
-        }
-    }
-
-    // Método para validar o token
-    async validarToken(req, res, next) {
-        const token = req.headers.authorization;
-
-        try {
-            await controller.validarToken(token);
-            next();
         } catch (error) {
             return res.status(400).send({ error: error.message })
         }

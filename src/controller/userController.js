@@ -46,7 +46,7 @@ class UserController {
             || email === undefined
             || senha === undefined
         ) {
-            throw new Error('Id, nome, email e senha são obrigatórios');
+            throw new Error('nome, email e senha são obrigatórios');
         }
 
         const user = await this.buscarPorId(id);
@@ -69,7 +69,9 @@ class UserController {
 
         const user = await this.buscarPorId(id);
 
-        user.destroy();
+        await user.destroy();
+
+        return user;
     }
 
     async listarUsuarios() {

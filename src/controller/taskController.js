@@ -79,3 +79,5 @@ class TaskController {
         return tasks;
     }
 }
+
+module.exports = new TaskController();
