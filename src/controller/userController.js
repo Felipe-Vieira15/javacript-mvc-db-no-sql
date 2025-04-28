@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const saltRounds = 10;
-const JWT_SECRET_KEY = 'batata';
+const JWT_SECRET_KEY = 'lipeee';
 
 class UserController {
     async criarUsuario(nome, email, senha) {
@@ -103,17 +103,17 @@ class UserController {
         return { token: jwtToken }
     }
 
-    // async validarToken(req, res, next) {
-    //     try {
-    //         const token = req.headers['authorization'].split(' ')[1];
-    //         // Verifica se o token é válido e retorna o payload
-    //         const payload = jwt.verify(token, JWT_SECRET_KEY);
-    //         req.userId = payload.id;
-    //         next();
-    //     } catch (error) {
-    //         throw new Error('Token inválido');
-    //     }
-    // }
+    async validarToken(req, res, next) {
+        try {
+            const token = req.headers['authorization'].split(' ')[1];
+            // Verifica se o token é válido e retorna o payload
+            const payload = jwt.verify(token, JWT_SECRET_KEY);
+            req.userId = payload.id;
+            next();
+        } catch (error) {
+            throw new Error('Token inválido');
+        }
+    }
 }
 
 module.exports = new UserController();

@@ -62,16 +62,33 @@ class UserApi {
 
     // Método para validar o token
     async validarToken(req, res, next) {
+        const authHeader = req.headers['authorization'];
+    
+        if (!authHeader) {
+            return res.status(401).json({ error: 'Token não fornecido' });
+        }
+    
+        const parts = authHeader.split(' ');
+    
+        if (parts.length !== 2) {
+            return res.status(401).json({ error: 'Formato do token inválido' });
+        }
+    
+        const [scheme, token] = parts;
+    
+        if (!/^Bearer$/i.test(scheme)) {
+            return res.status(401).json({ error: 'Token mal formatado' });
+        }
+    
         try {
-            const token = req.headers['authorization'].split(' ')[1];
-            // Verifica se o token é válido e retorna o payload
             const payload = jwt.verify(token, JWT_SECRET_KEY);
             req.userId = payload.id;
             next();
         } catch (error) {
-            throw new Error('Token inválido');
+            return res.status(401).json({ error: 'Token inválido' });
         }
     }
+    
 }
 
 module.exports = new UserApi();
